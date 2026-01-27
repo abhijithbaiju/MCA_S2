@@ -1,0 +1,51 @@
+mysql> create database college;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use college;
+Database changed
+
+mysql> create table student(Rollno int(10),name varchar(10),dob date,place varchar(10),phno int(10));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> create table course(coursecode varchar(10),coursename varchar(10),credit int(10));
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| student           |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> desc student;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Rollno | int         | YES  |     | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| dob    | date        | YES  |     | NULL    |       |
+| place  | varchar(10) | YES  |     | NULL    |       |
+| phno   | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> alter table student drop phno;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table student add aadharno varchar(20);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table student modify column rollno varchar(10);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop database college;
+Query OK, 1 row affected (0.05 sec)
+
