@@ -1,0 +1,74 @@
+mysql> create database employee;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use employee;
+Database changed
+
+mysql>  create table employee(empno int(10),empname varchar(20),place varchar(20),phno int(10),deptname varchar(20),jobid int(10),salary int(10));
+Query OK, 0 rows affected, 4 warnings (0.04 sec)
+
+mysql> create table department(deptname varchar(20), empno int(10),empname varchar(20));
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> alter table employee add hire_date date;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee modify jobid varchar(20);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee change empno eno int(10);
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> alter table employee modify jobid varchar(30);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee add primary key(eno);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| eno       | int         | NO   | PRI | NULL    |       |
+| empname   | varchar(20) | YES  |     | NULL    |       |
+| place     | varchar(20) | YES  |     | NULL    |       |
+| phno      | int         | YES  |     | NULL    |       |
+| deptname  | varchar(20) | YES  |     | NULL    |       |
+| jobid     | varchar(30) | YES  |     | NULL    |       |
+| salary    | int         | YES  |     | NULL    |       |
+| hire_date | date        | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> alter table employee drop hire_date;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> rename table employee to emp;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> truncate table emp;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| eno      | int         | NO   | PRI | NULL    |       |
+| empname  | varchar(20) | YES  |     | NULL    |       |
+| place    | varchar(20) | YES  |     | NULL    |       |
+| phno     | int         | YES  |     | NULL    |       |
+| deptname | varchar(20) | YES  |     | NULL    |       |
+| jobid    | varchar(30) | YES  |     | NULL    |       |
+| salary   | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.03 sec)
+
