@@ -1,0 +1,247 @@
+mysql> create database product;
+Query OK, 1 row affected (0.03 sec)
+
+
+mysql> use product;
+Database changed
+
+mysql> create table order_details(orderid int primary key,product_Name varchar(50),orderno int,order_date date);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into order_details values(1,'Laptop',234,'2000-03-02'),(2,'Desktop',456,'2001-02-02'),(3,'Keyboard',457,'2000-03-02'),(4,'Mouse',500,'2001-03-02'),(5,'Antivirus',501,'2002-03-02');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select *from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
+|       4 | Mouse        |     500 | 2001-03-02 |
+|       5 | Antivirus    |     501 | 2002-03-02 |
++---------+--------------+---------+------------+
+5 rows in set (0.00 sec)
+
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into order_details values(6,'printer',600,'2003-04-02'),(7,'scanner',601,'2003-05-02');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select *from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
+|       4 | Mouse        |     500 | 2001-03-02 |
+|       5 | Antivirus    |     501 | 2002-03-02 |
+|       6 | printer      |     600 | 2003-04-02 |
+|       7 | scanner      |     601 | 2003-05-02 |
++---------+--------------+---------+------------+
+7 rows in set (0.00 sec)
+
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
+|       4 | Mouse        |     500 | 2001-03-02 |
+|       5 | Antivirus    |     501 | 2002-03-02 |
++---------+--------------+---------+------------+
+5 rows in set (0.00 sec)
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE from order_details WHERE orderid in (4,5);
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> select * from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
++---------+--------------+---------+------------+
+3 rows in set (0.00 sec)
+
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
++---------+--------------+---------+------------+
+3 rows in set (0.00 sec)
+
+
+ysql> SET autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SAVEPOINT SVP_UPDATE;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> UPDATE order_details SET product_Name = 'Gaming_keyboard' WHERE orderno = 457;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+ysql> insert into order_details values(8,'speaker',700,'2000-01-01'),(9,'webcam',701,'2004-02-01');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from order_details;
++---------+-----------------+---------+------------+
+| orderid | product_Name    | orderno | order_date |
++---------+-----------------+---------+------------+
+|       1 | Laptop          |     234 | 2000-03-02 |
+|       2 | Desktop         |     456 | 2001-02-02 |
+|       3 | Gaming_keyboard |     457 | 2000-03-02 |
+|       8 | speaker         |     700 | 2000-01-01 |
+|       9 | webcam          |     701 | 2004-02-01 |
++---------+-----------------+---------+------------+
+5 rows in set (0.00 sec)
+
+
+mysql> SAVEPOINT SVP_DELETE;
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+mysql> DELETE from order_details WHERE product_Name = 'Desktop';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from order_details;
++---------+-----------------+---------+------------+
+| orderid | product_Name    | orderno | order_date |
++---------+-----------------+---------+------------+
+|       1 | Laptop          |     234 | 2000-03-02 |
+|       3 | Gaming_keyboard |     457 | 2000-03-02 |
+|       8 | speaker         |     700 | 2000-01-01 |
+|       9 | webcam          |     701 | 2004-02-01 |
++---------+-----------------+---------+------------+
+4 rows in set (0.01 sec)
+
+
+mysql> ROLLBACK TO SVP_DELETE;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from order_details;
++---------+-----------------+---------+------------+
+| orderid | product_Name    | orderno | order_date |
++---------+-----------------+---------+------------+
+|       1 | Laptop          |     234 | 2000-03-02 |
+|       2 | Desktop         |     456 | 2001-02-02 |
+|       3 | Gaming_keyboard |     457 | 2000-03-02 |
+|       8 | speaker         |     700 | 2000-01-01 |
+|       9 | webcam          |     701 | 2004-02-01 |
++---------+-----------------+---------+------------+
+5 rows in set (0.00 sec)
+
+
+mysql> ROLLBACK TO SVP_UPDATE;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from order_details;
++---------+--------------+---------+------------+
+| orderid | product_Name | orderno | order_date |
++---------+--------------+---------+------------+
+|       1 | Laptop       |     234 | 2000-03-02 |
+|       2 | Desktop      |     456 | 2001-02-02 |
+|       3 | Keyboard     |     457 | 2000-03-02 |
++---------+--------------+---------+------------+
+3 rows in set (0.00 sec)
+
+
+mysql> SET autocommit=1;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> create user 'user'@'localhost' identified by 'password123';
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> grant all privileges on product.order_details to 'user'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> show grants for  'user'@'localhost';
++-------------------------------------------------------------------------+
+| Grants for user@localhost                                               |
++-------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user`@`localhost`                                |
+| GRANT ALL PRIVILEGES ON `product`.`order_details` TO `user`@`localhost` |
++-------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+mysql> revoke insert,delete on product.order_details from 'user'@'localhost';
+Query OK, 0 rows affected (0.03 sec)
+
+
+mysql>  show grants for  'user'@'localhost';
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for user@localhost                                                                                                                        |
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user`@`localhost`                                                                                                         |
+| GRANT SELECT, UPDATE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER ON `product`.`order_details` TO `user`@`localhost` |
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
