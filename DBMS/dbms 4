@@ -182,6 +182,7 @@ mysql> select * from Employee;
 
 mysql> delete from Employee where salary=5000;
 Query OK, 1 row affected (0.02 sec)
+
  select emp_name,mob from Employee where emp_name like 'A%';
 +----------+------------+
 | emp_name | mob        |
@@ -243,6 +244,7 @@ mysql> select emp_name from Employee where designation in('Manager','Analyst');
 | Diddy    |
 +----------+
 7 rows in set (0.00 sec)
+
 select dept_no,count(*)as total_employees from Employee group by dept_no;
 +---------+-----------------+
 | dept_no | total_employees |
@@ -296,6 +298,7 @@ mysql> select dept_no,avg(salary)as average_salary from Employee where dept_no <
 | dp04    |     18000.0000 |
 +---------+----------------+
 3 rows in set (0.00 sec)
+
 select dept_no,avg(salary)as average_salary from Employee where dept_no <>'dp01' group by dept_no having avg(salary)>20000 order by average_salary asc;
 +---------+----------------+
 | dept_no | average_salary |
