@@ -1,0 +1,258 @@
+mysql> create database plsql;
+
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use plsql
+Database changed
+
+
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE gof(
+    ->     IN a INT,
+    ->     IN b INT,
+    ->     IN c INT
+    -> )
+    -> BEGIN
+    ->     DECLARE greatest INT;
+    -> 
+    ->     IF a >= b AND a >= c THEN
+    ->         SET greatest = a;
+    ->     ELSEIF b >= a AND b >= c THEN
+    ->         SET greatest = b;
+    ->     ELSE
+    ->         SET greatest = c;
+    ->     END IF;
+    -> 
+    ->     SELECT greatest AS greatest_number;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> CALL gof(12,20,30);
++-----------------+
+| greatest_number |
++-----------------+
+|              30 |
++-----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+mysql> DELIMITER //
+mysql> 
+mysql> create procedure fact(IN num int)
+    -> BEGIN
+    -> DECLARE fact bigint default 1;
+    -> DECLARE i int default 1;
+    -> while i<=num do
+    ->   set fact=fact*i;
+    ->   set i=i+1;
+    -> END while;
+    -> select fact as factorial;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> call fact(5);
++-----------+
+| factorial |
++-----------+
+|       120 |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE Grademark(IN mark INT)
+    -> BEGIN
+    ->     IF mark >= 90 THEN
+    ->         SELECT 'GRADE A' AS Grade;
+    ->     ELSEIF mark >= 80 THEN
+    ->         SELECT 'GRADE B' AS Grade;
+    ->     ELSEIF mark >= 70 THEN
+    ->         SELECT 'GRADE C' AS Grade;
+    ->     ELSEIF mark >= 60 THEN
+    ->         SELECT 'GRADE D' AS Grade;
+    ->     ELSE
+    ->         SELECT 'GRADE F' AS Grade;
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> call Grademark(75);
++---------+
+| Grade   |
++---------+
+| GRADE C |
++---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE ReverseNumber (IN num INT)
+    -> BEGIN
+    ->     DECLARE reversed INT DEFAULT 0;
+    ->     DECLARE remainder INT;
+    ->     DECLARE temp INT;
+    -> 
+    ->     SET temp = num;
+    -> 
+    ->     WHILE temp > 0 DO
+    ->         SET remainder = temp % 10;
+    ->         SET reversed = (reversed * 10) + remainder;
+    ->         SET temp = FLOOR(temp / 10);
+    ->     END WHILE;
+    -> 
+    ->     SELECT reversed AS Reversed_Number;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> CALL ReverseNumber(256);
++-----------------+
+| Reversed_Number |
++-----------------+
+|             652 |
++-----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+mysql> DELIMITER //
+mysql> 
+mysql> CREATE PROCEDURE sum_numbers(IN n INT)
+    -> BEGIN
+    ->     DECLARE total INT DEFAULT 0;
+    ->     DECLARE i INT DEFAULT 1;
+    -> 
+    ->     WHILE i <= n DO
+    ->         SET total = total + i;
+    ->         SET i = i + 1;
+    ->     END WHILE;
+    -> 
+    ->     SELECT total AS total_sum;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> call sum_numbers(5);
++-----------+
+| total_sum |
++-----------+
+|        15 |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+
+
+
+mysql> CREATE TABLE accounts (acc_id INT PRIMARY KEY,balance INT);
+    -> INSERT INTO accounts VALUES
+    -> (100,1000),
+    -> (101,4000),
+    -> (102,15000),
+    -> (103,1000);
+    -> DELIMITER //
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 4 rows affected (0.05 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE withdraw_amount(IN accnt_id INT, IN amount INT)
+    -> BEGIN
+    ->     DECLARE current_balance INT;
+    -> 
+    ->     SELECT balance INTO current_balance
+    ->     FROM accounts
+    ->     WHERE acc_id = accnt_id;
+    -> 
+    ->     IF current_balance IS NULL THEN
+    ->         SELECT 'Account does not exist' AS message;
+    -> 
+    ->     ELSEIF current_balance - amount >= 1000 THEN
+    ->         UPDATE accounts
+    ->         SET balance = balance - amount
+    ->         WHERE acc_id = accnt_id;
+    -> 
+    ->         SELECT 'Withdrawal successful' AS message;
+    -> 
+    ->     ELSE
+    ->         SELECT 'Minimum balance of 1000 must be maintained' AS message;
+    ->     END IF;
+    -> 
+    -> END //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> call withdraw_amount(101,2000);
++-----------------------+
+| message               |
++-----------------------+
+| Withdrawal successful |
++-----------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+mysql> DELIMITER //
+mysql> CREATE FUNCTION sum_of_digits(num INT)
+    -> RETURNS INT
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE total INT DEFAULT 0;
+    ->     DECLARE remainder INT;
+    ->     WHILE num > 0 DO
+    ->         SET remainder = num % 10;
+    ->         SET total = total + remainder;
+    ->         SET num = num DIV 10;
+    ->     END WHILE;
+    ->     RETURN total;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> SELECT sum_of_digits(7);
++------------------+
+| sum_of_digits(7) |
++------------------+
+|                7 |
++------------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
