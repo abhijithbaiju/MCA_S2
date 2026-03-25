@@ -1,0 +1,745 @@
+test> use collegee
+switched to db collegee
+
+collegee> db.createCollection("class")
+{ ok: 1 }
+
+collegee> db.class.insertMany([
+{rollno:1,name:"Arun",age:20,gender:"male",div:"A",sub:["Math","CS"],credit:4},
+{rollno:2,name:"Beena",age:21,gender:"female",div:"A",sub:["Physics","Math"],credit:3},
+{rollno:3,name:"Akhil",age:22,gender:"male",div:"B",sub:["CS","Math"],credit:4},
+{rollno:4,name:"Divya",age:19,gender:"female",div:"B",sub:["Math","Bio"],credit:2},
+{rollno:5,name:"Ishaan",age:23,gender:"male",div:"C",sub:["Chem","Math"],credit:3},
+{rollno:6,name:"Farah",age:20,gender:"female",div:"C",sub:["CS","Physics"],credit:4},
+{rollno:7,name:"Gokul",age:24,gender:"male",div:"A",sub:["Math","CS"],credit:5},
+{rollno:8,name:"Hema",age:22,gender:"female",div:"B",sub:["Bio","Chem"],credit:2},
+{rollno:9,name:"Tina",age:21,gender:"female",div:"C",sub:["Math","CS"],credit:3},
+{rollno:10,name:"Tom",age:25,gender:"male",div:"A",sub:["Physics","CS"],credit:4},
+
+
+collegee> db.class.find()
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    age: 20,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: [ 'Physics', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: [ 'CS', 'Math' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Math', 'Bio' ],
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'Chem', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4c'),
+    rollno: 6,
+    name: 'Farah',
+    age: 20,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'CS', 'Physics' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    age: 22,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Bio', 'Chem' ],
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: [ 'Math', 'CS' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Physics', 'CS' ],
+    credit: 4
+  }
+]
+
+collegee> db.class.aggregate([{$group:{_id:"$div",total:{$sum:1},maxAge:{$max:"$age"}}}])
+[
+  { _id: 'C', total: 3, maxAge: 23 },
+  { _id: 'A', total: 4, maxAge: 25 },
+  { _id: 'B', total: 3, maxAge: 22 }
+]
+
+collegee> db.class.aggregate([{$match:{age:{$gt:20}}}])
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: [ 'Physics', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: [ 'CS', 'Math' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'Chem', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    age: 22,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Bio', 'Chem' ],
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: [ 'Math', 'CS' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Physics', 'CS' ],
+    credit: 4
+  }
+]
+
+collegee> db.class.find().sort({age:-1})
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Physics', 'CS' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'Chem', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: [ 'CS', 'Math' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    age: 22,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Bio', 'Chem' ],
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: [ 'Physics', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: [ 'Math', 'CS' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    age: 20,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4c'),
+    rollno: 6,
+    name: 'Farah',
+    age: 20,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'CS', 'Physics' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Math', 'Bio' ],
+    credit: 2
+  }
+]
+
+
+collegee> db.class.aggregate([
+... {$match:{div:"B"}},
+... {$sort:{age:1}},
+... {$limit:1}])
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Math', 'Bio' ],
+    credit: 2
+  }
+]
+
+collegee> db.class.aggregate([{$group:{_id:null,avgAge:{$avg:"$age"}}}])
+[ { _id: null, avgAge: 21.7 } ]
+
+
+collegee> db.class.aggregate([{$group:{_id:"$gender",count:{$sum:1}}}])
+[ { _id: 'male', count: 6 }, { _id: 'female', count: 4 } ]
+collegee> 
+
+
+collegee> db.class.aggregate([{$unwind:"$sub"}])
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    age: 20,
+    gender: 'male',
+    div: 'A',
+    sub: 'Math',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    age: 20,
+    gender: 'male',
+    div: 'A',
+    sub: 'CS',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: 'Physics',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: 'Math',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: 'CS',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: 'Math',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: 'Math',
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: 'Bio',
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: 'Chem',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: 'Math',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4c'),
+    rollno: 6,
+    name: 'Farah',
+    age: 20,
+    gender: 'male',
+    div: 'C',
+    sub: 'CS',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4c'),
+    rollno: 6,
+    name: 'Farah',
+    age: 20,
+    gender: 'male',
+    div: 'C',
+    sub: 'Physics',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: 'Math',
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: 'CS',
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    age: 22,
+    gender: 'female',
+    div: 'B',
+    sub: 'Bio',
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+    rollno: 8,
+    name: 'Hema',
+    age: 22,
+    gender: 'female',
+    div: 'B',
+    sub: 'Chem',
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: 'Math',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: 'CS',
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: 'Physics',
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: 'CS',
+    credit: 4
+  }
+]
+
+
+collegee> db.class.find({name:/^T/})
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: [ 'Math', 'CS' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+    rollno: 10,
+    name: 'Tom',
+    age: 25,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Physics', 'CS' ],
+    credit: 4
+  }
+]
+
+
+collegee> db.class.find({sub:"Math"})
+[
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+    rollno: 1,
+    name: 'Arun',
+    age: 20,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f48'),
+    rollno: 2,
+    name: 'Beena',
+    age: 21,
+    gender: 'female',
+    div: 'A',
+    sub: [ 'Physics', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+    rollno: 3,
+    name: 'Akhil',
+    age: 22,
+    gender: 'male',
+    div: 'B',
+    sub: [ 'CS', 'Math' ],
+    credit: 4
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4a'),
+    rollno: 4,
+    name: 'Divya',
+    age: 19,
+    gender: 'female',
+    div: 'B',
+    sub: [ 'Math', 'Bio' ],
+    credit: 2
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+    rollno: 5,
+    name: 'Ishaan',
+    age: 23,
+    gender: 'male',
+    div: 'C',
+    sub: [ 'Chem', 'Math' ],
+    credit: 3
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4d'),
+    rollno: 7,
+    name: 'Gokul',
+    age: 24,
+    gender: 'male',
+    div: 'A',
+    sub: [ 'Math', 'CS' ],
+    credit: 5
+  },
+  {
+    _id: ObjectId('69c3a09b70bcdc49a5ce5f4f'),
+    rollno: 9,
+    name: 'Tina',
+    age: 21,
+    gender: 'female',
+    div: 'C',
+    sub: [ 'Math', 'CS' ],
+    credit: 3
+  }
+]
+
+
+collegee> db.class.aggregate([{$sort:{rollno:1}},{$group:{_id:"$div",firststudent:{$first:"$$ROOT"}}}])
+[
+  {
+    _id: 'C',
+    firststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+      rollno: 5,
+      name: 'Ishaan',
+      age: 23,
+      gender: 'male',
+      div: 'C',
+      sub: [ 'Chem', 'Math' ],
+      credit: 3
+    }
+  },
+  {
+    _id: 'A',
+    firststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f47'),
+      rollno: 1,
+      name: 'Arun',
+      age: 20,
+      gender: 'male',
+      div: 'A',
+      sub: [ 'Math', 'CS' ],
+      credit: 4
+    }
+  },
+  {
+    _id: 'B',
+    firststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f49'),
+      rollno: 3,
+      name: 'Akhil',
+      age: 22,
+      gender: 'male',
+      div: 'B',
+      sub: [ 'CS', 'Math' ],
+      credit: 4
+    }
+  }
+]
+
+
+collegee> db.class.aggregate([{$sort:{age:1}},{$group:{_id:"$div",laststudent:{$last:"$$ROOT"}}}])
+[
+  {
+    _id: 'C',
+    laststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f4b'),
+      rollno: 5,
+      name: 'Ishaan',
+      age: 23,
+      gender: 'male',
+      div: 'C',
+      sub: [ 'Chem', 'Math' ],
+      credit: 3
+    }
+  },
+  {
+    _id: 'B',
+    laststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f4e'),
+      rollno: 8,
+      name: 'Hema',
+      age: 22,
+      gender: 'female',
+      div: 'B',
+      sub: [ 'Bio', 'Chem' ],
+      credit: 2
+    }
+  },
+  {
+    _id: 'A',
+    laststudent: {
+      _id: ObjectId('69c3a09b70bcdc49a5ce5f50'),
+      rollno: 10,
+      name: 'Tom',
+      age: 25,
+      gender: 'male',
+      div: 'A',
+      sub: [ 'Physics', 'CS' ],
+      credit: 4
+    }
+  }
+]
+
+
+collegee> db.class.createIndex({rollno:1},{name:"rollno_index"})
+rollno_index
+
+collegee> db.class.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_index' }
+]
+
+
+collegee> db.class.dropIndexes()
+{
+  nIndexesWas: 2,
+  msg: 'non-_id indexes dropped for collection',
+  ok: 1
+}
+
